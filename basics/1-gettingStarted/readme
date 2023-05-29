@@ -1,0 +1,19 @@
+Create the docker file build the image on top of it.
+# ~ docker build -t mrkhadus/kubeapp:first . 
+
+push the image to the docker repository
+# ~ docker push mrkhadus/kubeapp:first
+
+Create the first 'Deployment' object in our kubernetes. 
+# minikube start
+# kubectl create deployment deployment-name --image=mrkhadus/kubeapp:first
+
+to list the deployments
+# kubectl get deployments
+
+to list the pods 
+# kubectl get pods
+
+## All we done is just to create the deployment which will help us to attain the desired state of the pods.
+## To expose the deployment to the outside world, we need to create the service.
+

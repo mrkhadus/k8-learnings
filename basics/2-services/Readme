@@ -1,0 +1,26 @@
+## service
+Services are used to connect to the pod or expose the pod within the cluster and outside.
+Pods have an internal IP by default; 
+# 2 issues here
+1. IP changes when the pod is replaced 
+2. Those IP's cannot be used to access the pod from outside the cluster
+
+## We can create the service using the kubectl command
+But there is more convenient way to do so.
+# ~ kubectl expose 
+# ~ kubectl expose deployment <deploymentName> --type=<type> --port=8080
+--type: 
+1. ClusterIP: default type and is cluster scoped
+2. NodePort: This type uses the IP of the worked node to be accessible from outside the cluster
+3. LoadBalancer: This generates the unique address for the service and also balances load across pods.
+
+# we will use the --type=LoadBalancer here
+~ kubectl get services
+~ minikube service <serviceName> ==> gives us the uniqe address to access the app within the container in the pod.
+https://drive.google.com/file/d/1gBjb3Fdks_uROE2ZOsLA94eGrbTPShLm/view?usp=drive_link
+
+If the /error is added after the unique address the container crashes and is restarted. 
+
+# Scaling
+to scale the containers to some specific number of pods
+~ kubectl scale deployment <deploymentName> --replicas=3   ==> 3 pods will be created
