@@ -1,0 +1,20 @@
+## Declarative Approach
+
+> https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/deployment-v1/#DeploymentList
+
+1. apiversion: XXX ==> search/ google for deployment yaml OR service yaml, etc we get the latest api version to use. Features are linked to the api version. some features might not be available in the new/latest apiversion.
+2. kind: deployment ==> what kind of object we want to create.
+3. metadata: Name ==> Name for our deployment, Namespace and many more things refer doc.
+4. spec: 
+```
+spec:
+```
+    specification for the deployment object is defined here.
+~replica: 2
+~selector:
+    matchLabels:
+        <key>: <value>  -------------------------
+~template:   # pods to be created               |
+    metadata:                                   | ------ Should match, If matches then this deployment managed this pods
+        labels:                                 |    
+            <key>: <value> ----------------------
