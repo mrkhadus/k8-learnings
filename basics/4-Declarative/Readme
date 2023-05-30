@@ -18,3 +18,47 @@ spec:
     metadata:                                   | ------ Should match, If matches then this deployment managed this pods
         labels:                                 |    
             <key>: <value> ----------------------
+
+# if the key and value of pod (in template) matches the key value of the other deployments, that other deployment will control those pods.
+# same goes with the service.
+
+# services
+Services is old, here in the selector field we can only match the label so we do not need to specify the nested 'matchLabel:' directly specify the key and value.
+
+# Updating
+updating the deployment or services, etc is easy make changes to the config file and reapply
+~ kubectl apply -f=<filename>.yaml
+
+# Deleting:
+Deleting the resources can be done using the both imperative as well the declarative way.
+1. Declarative way-
+~/Desktop/k8/basics/4-Declarative$ **kubectl delete -f=deployment.yaml,services.yaml**
+deployment.apps "first-app" deleted
+service "kubeapp-service" deleted
+
+2. Imperative Way:
+~ kubectl delete deployment <deployment_name>
+~ kubectl delete service <serviceName>
+
+# Config file combined: 
+Copy the content from the deployment.yaml paste it to main.yaml
+seperator ==> ---       **3 dashes**
+below seperator copy and paste the content from the other file eg. Service.yaml, etc.
+
+
+# Conatiner level specifications in config file.
+spec:    
+    containers:
+        - image: mrkhadus/kubeapp:first
+          name: demoapp
+          livenessProbe:   # to check the health and the status of the pod
+            httpGet:       # method by which it checks the health of pod
+              path: /      # path at which it checks the health by visiting 
+              port: 8080    # port which is used to go to that path in the pod
+            periodSeconds: 300   # interval seconds at which the visiting is done.
+            initialDelaySeconds: 5   # initial delay ==> time given for container to spin up
+          resources: # **Limiting the resources(cpu, memory) for the container**
+            limits:
+              cpu: 100m   # **100m = 100 microsecond of bandwidth out of the total microseconds of cpu time eg. 100/X**
+              memory: 250Mi # **Limit of the RAM container can use**
+          imagePullPolicy: Always # if we redeploy (apply) the config file it will again pull the image, not matter itf that was updated or not.

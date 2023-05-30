@@ -6,7 +6,9 @@ spec:
   selector:
     matchLabels:
       app: my-first-app
-  replicas: 1
+    # matchExpressions: # to match the expression dynamically using the operator- In, NotIn, Exists, DoesNotExist
+    #   - {key: app, operator: In, values: [first-app, my-first-app]}
+  replicas: 3
   template:
     metadata:
       labels:
@@ -15,3 +17,14 @@ spec:
       containers:
         - image: mrkhadus/kubeapp:first
           name: demoapp
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 300
+            initialDelaySeconds: 5
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+          imagePullPolicy: Always # if we redeploy (apply) the config file it will again pull the image, not matter itf that was updated or not.
