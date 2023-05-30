@@ -1,0 +1,21 @@
+# Upadting the App i.e the image within the running container.
+
+1. Create a new image with a different tag on top of the current image.
+2. Push the image to the docker hub
+3. run the command 
+# ~ kubectl set image deployment/<deploymentName> <containerName>=<newImage>
+==> kubectl set image deployment/first-app first-app-cont=mrkhadus/kubeapp:second
+4. To see the status,==> ~ kubectl rollout status deployment/<deploymentName>
+5.to undo the rollout==> ~ kubectl rollout undo deployment/<deploymentName>
+\-> This will only rollback to the previous version.
+
+# To rollback to the version beyond previous one.
+~ kubectl rollout history deployment/<deploymentName>  ==> gives all the history with some revision ID.
+~ kubectl rollout history deployment/<deploymentName> --revision=<revisionID> ==> to see details of the revision ID we got by checking all the history
+~ kubectl rollout undo deployment/<deploymentName> --to-revision=<revisionID>
+
+
+https://drive.google.com/file/d/1C1t_3I3Dc4XcT_df3fxnEQRrab2Qg8m4/view?usp=drive_link
+
+## All till this point we saw was the imperative way of managing and creating the objects.
+### From next module we'll see the Declaraive approach.
