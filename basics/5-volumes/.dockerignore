@@ -1,0 +1,7 @@
+node_modules
+Dockerfile
+.git
+.gitignore
+Readme
+deployment.yaml
+service.yaml

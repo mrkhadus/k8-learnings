@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volume-deployment
+spec:
+  selector:
+    matchExpressions:   # Tried it here. Still need to explore more on it.
+    - {key: app, operator: In, values: [story-app, stroy-ap]}
+  template:
+    metadata:
+      labels:
+        app: story-app
+    spec:
+      containers:
+      - name: story-app-cont
+        image: mrkhadus/story-app:volume2
+        resources:
+          limits:
+            cpu: 50m
+            memory: 64Mi
