@@ -1,0 +1,41 @@
+# Story App which creates and uses volumes within the pod.
+# to test the application , we need postman app to make requests using the GET and POST API.
+apply the deployment and the service.
+in 'Postman app' make the GET request at the address, which we get after using the ~ 'minikube service volume-service'
+<address>:<port>/story
+= we get empty response
+Then make the POST request==> in Body> Raw > JSON pass some text 
+{
+  text: "mr.khadus"
+}
+Try making GET Request: It Gives the text 'mr.khadus' as output.
+Then make the request at /error
+==> container restarts and volume in the pod is safe and active - only container restarts
+==>  after making request to GET we are bale to get the data/text 'mr.khadus' 
+
+# emptyDir: empty directory is created and is mounted on to containers xyz path, where container stores and retrieves data from.
+## 
+==> check the deployment.yaml file.
+      volumes:
+        - name: story-volume
+          emptyDir: {}   # Empty directory - initial GET request fails as we don't have text.txt file in this dir needed for the app, POST creates one for us.
+            
+
+# hostPath: It is same as that of the bind mounts in docker, the local path is provided in order for the pods/ container to store the data in the local host machine at some specific path
+`      volumes:
+        - name: story-volume
+          hostPath:
+            path: ./hostpath-vol`
+==> multiple pods now share the same common storage path, so if one pod goes down other can get the data from this path and give the output. 
+
+
+# Persistent Volumes: independent of the Pods and Nodes. 
+==> PVC - Persistent Volume Claim -> Claims -> PV - Persistent Volume
+i.e PVC = requests storage to the persistent volumes.
+
+# cmds:
+kubectl apply -f host-pv.yaml 
+kubectl apply -f host-pvc.yaml 
+kubectl apply -f deployment.yaml 
+kubectl get pv
+kubectl get pvc

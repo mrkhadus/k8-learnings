@@ -1,0 +1,17 @@
+# seting up PV using Host type
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Block
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  #  - ReadOnlyMany
+  #  - ReadWriteMany   # hostPath is only for single node and so we cannot use these 2 options as we don't have multiple nodes
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate

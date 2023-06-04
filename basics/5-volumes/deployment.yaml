@@ -3,9 +3,12 @@ kind: Deployment
 metadata:
   name: volume-deployment
 spec:
+  replicas: 2
   selector:
     matchExpressions:   # Tried it here. Still need to explore more on it.
     - {key: app, operator: In, values: [story-app, stroy-ap]}
+    # matchLabels:
+    #   app: story-app
   template:
     metadata:
       labels:
@@ -18,3 +21,17 @@ spec:
           limits:
             cpu: 50m
             memory: 64Mi
+        volumeMounts:
+          - mountPath: /app/story  # ==> this is the path in the app which we use.
+            name: story-volume   # the name of volume which should be mounted to above path
+      # volumes:
+      #   - name: story-volume
+      #     emptyDir: {}   # Empty directory - POD SPECIFIC initial GET request fails as we don't have text.txt file in this dir needed for the app, POST creates one for us.
+      volumes:
+        - name: story-volume
+          # hostPath:
+          #   path: /hostpath-vol # hotspath-vol the folder in the local(node on which pod runs) will be linked to the internal path /app/story
+          #   type: Directory # DirectoryOrCreate is used when the path is not created already in host. 
+          # # hostPAth will be used only in local (single node) deployment testing and not for multi-node.
+          persistentVolumeClaim:
+            claimName: mypvc  # metadata for persistent volume. # configured for all cluster and not just the pod.
