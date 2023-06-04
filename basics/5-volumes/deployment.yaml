@@ -16,17 +16,28 @@ spec:
     spec:
       containers:
       - name: story-app-cont
-        image: mrkhadus/story-app:volume2
+        image: mrkhadus/story-app:env
         resources:
           limits:
             cpu: 50m
             memory: 64Mi
+        # env:
+        #   - name: STORY_FOLDER
+        #     value: 'Story'   # change it in the app.js to 'process.env.STORY_FOLDER'
+            # if we want to change the volumeMounts mount path, make changes here(line below the next line) and no need to touch the app
+        env:
+          - name: STORY_FOLDER
+            valueFrom:
+              configMapKeyRef:
+                name: data-store-env # name defined in the metadata of env file
+                key: folder    # key name defined in the data (key value pair) 
         volumeMounts:
           - mountPath: /app/story  # ==> this is the path in the app which we use.
             name: story-volume   # the name of volume which should be mounted to above path
       # volumes:
       #   - name: story-volume
       #     emptyDir: {}   # Empty directory - POD SPECIFIC initial GET request fails as we don't have text.txt file in this dir needed for the app, POST creates one for us.
+
       volumes:
         - name: story-volume
           # hostPath:

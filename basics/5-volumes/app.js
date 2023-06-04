@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const filePath = path.join(__dirname, 'story', 'text.txt');
-
+const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');
+/* for environments lab, changed the 'story' to process.env.STORY_FOLDER as defined in deployment.yaml file */
 app.use(bodyParser.json());
 
 app.get('/story', (req, res) => {

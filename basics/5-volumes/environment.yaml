@@ -1,0 +1,11 @@
+# to have key value pairs of env vars in a different file. which can be used by different 
+# container specs.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data-store-env
+data:
+# key: value
+  folder: 'story'
+ #key2: value2, and so on.
+ 

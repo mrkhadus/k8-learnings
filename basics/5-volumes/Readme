@@ -39,3 +39,21 @@ kubectl apply -f host-pvc.yaml
 kubectl apply -f deployment.yaml 
 kubectl get pv
 kubectl get pvc
+
+
+We can specify the environment variables in the deployment files under the container spec:
+        ```
+        env:
+          - name: STORY_FOLDER
+            value: 'Story'
+        ``` 
+
+We can also define the variables and their values in a separate file and apply that file. which will allow deployments to get the reference to the values of the defined variable keys in the deployment file. ==> to understand the environment file check--> environment.yaml 
+```
+env:
+  - name: STORY_FOLDER
+    valueFrom:
+      configMapKeyRef:
+       name: data-store-env   # The name specified in environment.yaml
+       key: folder     # Key name defined in the environment.yaml file.
+```
