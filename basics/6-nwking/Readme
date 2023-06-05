@@ -1,0 +1,42 @@
+About App: 
+Application has 3 backend API's which will work together.
+3 different containers
+1. auth-api : for verifing tokens and generating tokens
+2. users-api: creating the users and loggings users in (no volumes used) -- users-api reaches to the auth for generating the token while user logging.
+3. tasks-api: return a list of stored tasks and new tasks, will be stored in file in anonymous vols in pods-- which reaches to the auth api to verify the token
+use postman to POST <address>:8080/login 
+```
+{
+    "email": "test@test.com"
+    "password": "testers"
+}
+```  ==> returns token in json format.
+# Now: Tasks:
+same step again at the same address <address>:8080/tasks POST ==> 
+```
+{
+    "title": "Do this"
+    "text": "A second task"
+}
+``` ==> then use the GET method to 
+## Check the App by using the docker-compose up --> will create the app in local environment.
+
+initially the users api and the auth api will be in same pod. Tasks-api will be in a separate pod.
+
+# the new container is created in the same deployment file (which also means in same pod) - for auth service.
+For the user-container to communicate with the auth-container, we use 'localhost:PORT' same as that in the case of container deployed on host using docker.
+```
+        env:
+          - name: AUTH_ADDRESS
+            value: localhost 
+```
+
+make a POST request to the address we get after running minikube service <serviceName>
+<service-Address>:<port>/signup ==> 
+in Body:  JSON ==>
+{
+    "email": "rushi@test.com",
+    "password": "testers"
+}
+
+Send the same data to the /login ==> it will return the token ==> which means the containers are able to communicate within the pod using the localhost.

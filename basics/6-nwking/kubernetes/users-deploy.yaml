@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+      - name: users
+        image: mrkhadus/network-users:v2
+        env:
+          - name: AUTH_ADDRESS
+            value: localhost
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # ports:
+        # - containerPort: 8080
+      - name: auth
+        image: mrkhadus/network-auth:v1
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
