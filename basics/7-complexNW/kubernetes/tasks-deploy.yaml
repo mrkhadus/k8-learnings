@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks
+spec:
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+      - name: tasks
+        image: mrkhadus/network-tasks:v1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
+        env:
+          - name: AUTH_ADDRESS
+            value: "auth-service.default"
+          - name: TASKS_FOLDER
+            value: "tasks"
+        imagePullPolicy: Always

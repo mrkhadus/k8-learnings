@@ -14,19 +14,16 @@ spec:
     spec:
       containers:
       - name: users
-        image: mrkhadus/network-users:v2
+        image: mrkhadus/network-users:ipdns
         env:
           - name: AUTH_ADDRESS
-            value: localhost  # will override AUTH_ADDRESS: auth ==> defined in docker compose
+            #value: "10.99.246.122"  # will override AUTH_ADDRESS: auth ==> defined in docker compose
+            value: "auth-service.default"   # core dns method to use only the <serviceName>.<namespace> to communicate to other service
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         # ports:
         # - containerPort: 8080
-      - name: auth
-        image: mrkhadus/network-auth:v1
-        resources:
-          limits:
-            memory: "64Mi"
-            cpu: "100m"
+        imagePullPolicy: Always
+

@@ -1,0 +1,27 @@
+# we have created a separate auth deployment- and we need the ip for the service (service IP's are fixed and never change) -- we can get this by 
+~ kubectl get services ==> use the IP from the CLUSTER_IP
+
+add the ip address as the value for the environment in the user deployment (where it is localhost for the previous inter pod communication) so user pod can communicate with the auth.
+
+once done - get the IP and the PORT for the users services using the minikube service <user-service>
+POST ==> <IP>:<PORT>/signup and <IP>:<PORT>/login 
+=for signup output= USer Created and for login user= token: abc.
+```
+{
+    "email": "test@test.com"
+    "password": "testers
+}
+```
+
+# Above is Manual Process, which is not the good practice to update the IP 
+Automatic way: ==> the kubernetes provides the way to auto resolve the DNS. 
+HOW? ==> Insted of the IP address = <SERVICE_NAME>_SERVICE_HOST 
+# ~ Service name in CAPITALS , Hyphen (-) Replaced with Underscore (_) , Followed by _SERVICE_HOST   ==> in the user-app.js source code.
+## Quite helpful than the previous manual approach but still not the good option.
+
+# coredns.io ==> modern kubernetes comes with core dns: To resolve domain names within the k8 cluster.
+Coredns is installed in the cluster by default and in the environments variables, keep the value as <serviceToConnectTo>.<nameSpace>  # service to connect to and namespace in which this service is.
+==> in app.js we will have the same ${process.env.<VariableName>}  # just as that in the above case
+
+Apply all the DNS and the service logic same as that of the users-pod to the tasks and get the address to send the GET request from the command ~ minikube service <taskService>
+send the GET request to: <taskService-Address>/tasks

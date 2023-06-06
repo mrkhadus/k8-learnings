@@ -40,3 +40,12 @@ in Body:  JSON ==>
 }
 
 Send the same data to the /login ==> it will return the token ==> which means the containers are able to communicate within the pod using the localhost.
+
+Till this point we are not using the task api in any way:
+* Task api will be in a separate pod.
+## The Task should be able to communicate with the Auth Api internally- not over the internet.
+- We will create 3  separate pods for 3 services and expose Task and USers outside the cluster. 
+- the Auth API will still be private within the cluster and not exposed outside the cluster.
+-- Task API and User API will be communicated/exposed from/to outside the cluster, but they will communicate with the AUTH API internally within the cluster.
+
+Will be created in a separate module number 7.
