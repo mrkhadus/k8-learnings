@@ -25,3 +25,10 @@ Coredns is installed in the cluster by default and in the environments variables
 
 Apply all the DNS and the service logic same as that of the users-pod to the tasks and get the address to send the GET request from the command ~ minikube service <taskService>
 send the GET request to: <taskService-Address>/tasks
+in the Headers section of the postman app: 
+Add Key= Authorization and the Value= Bearer abc, in Body- RAW  + JSON
+{
+    "text": "A first task",
+    "title": "Do this, too!"
+}
+Make a POST call to teh address/tasks.
